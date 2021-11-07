@@ -1,12 +1,24 @@
-#view.py
-from django.shortcuts import render
-from rest_framework.response import Response
-from .models import Product
-from rest_framework.views import APIView
-from .serializer import ProductSerializer
-class ProductListAPI(APIView):
+from django.views import View
+from django.http import HttpResponse, JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
+
+
+class ApiView(View):
+    @csrf_exempt
     def get(self, request):
-        queryset = Product.objects.all()
-        print(queryset)
-        serializer = ProductSerializer(queryset, many=True)
-        return Response(serializer.data)
+        with open('./media/jsondatas/00279.json') as f:
+            data = json.load(f)
+        return JsonResponse(data)
+
+    @csrf_exempt
+    def post(self, request):
+        return HttpResponse("Post 요청을 잘받았다")
+
+    @csrf_exempt
+    def put(self, request):
+        return HttpResponse("Put 요청을 잘받았다")
+
+    @csrf_exempt
+    def delete(self, request):
+        return HttpResponse("Delete 요청을 잘받았다")
